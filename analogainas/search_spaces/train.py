@@ -66,13 +66,11 @@ def create_rpu_config(g_max=25,
     rpu_config.drift_compensation = GlobalDriftCompensation()
     return rpu_config
 
-
 def create_analog_optimizer(model, lr):
     optimizer = AnalogSGD(model.parameters(), lr=lr)
     optimizer.regroup_param_groups(model)
 
     return optimizer
-
 
 def train(model, optimizer, criterion, epoch, trainloader, epoch_loss_values):
     # print('\nEpoch: %d' % epoch)

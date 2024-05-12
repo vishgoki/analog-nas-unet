@@ -10,6 +10,91 @@ import functools
 def round_(filter):
     return round(filter / 3)
 
+class UNetBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, mode='down', kernel_size=3, padding=1, upsample_kernel=2):
+        super(UNetBlock, self).__init__()
+        if mode == 'up':
+            self.conv = nn.ConvTranspose3d(in_channels, out_channels, kernel_size=upsample_kernel, stride=2, padding=upsample_kernel//2)
+        else:
+            self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=kernel_size, padding=padding, bias=False)
+        
+        self.bn = nn.BatchNorm3d(out_channels)
+        self.activation = nn.ReLU(inplace=True)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.bn(x)
+        x = self.activation(x)
+        return x
+
+class UNetGroup(nn.Module):
+    def __init__(self, in_channels, out_channels, depth, mode='down', merge_mode='concat'):
+        super(UNetGroup, self).__init__()
+        self.mode = mode
+        self.merge_mode = merge_mode
+        self.blocks = nn.ModuleList()
+        channels = in_channels
+
+        for i in range(depth):
+            self.blocks.append(UNetBlock(channels, out_channels, mode='down'))
+            channels = out_channels
+        
+        if mode == 'up':
+            self.up = UNetBlock(channels, out_channels, mode='up')
+
+    def forward(self, x, skip=None):
+        if self.mode == 'down':
+            skips = []
+            for block in self.blocks:
+                x = block(x)
+                skips.append(x)
+            return x, skips
+        elif self.mode == 'up':
+            x = self.up(x)
+            if skip is not None and self.merge_mode == 'concat':
+                x = torch.cat([x, skip], dim=1)
+            for block in self.blocks:
+                x = block(x)
+            return x
+
+class Network(nn.Module):
+    def __init__(self, config):
+        super(Network, self).__init__()
+        self.down_groups = nn.ModuleList()
+        self.up_groups = nn.ModuleList()
+
+        num_groups = len(config['channels']) - 1
+        channels = [config['in_channels']] + list(config['channels'])
+        up_channels = list(config['channels'])
+
+        # Creating the downsampling groups
+        for i in range(num_groups):
+            depth = config['num_res_units']
+            group = UNetGroup(channels[i], channels[i+1], depth=depth, mode='down')
+            self.down_groups.append(group)
+
+        # Creating the upsampling groups
+        for i in range(num_groups - 1, -1, -1):
+            depth = config['num_res_units']
+            group = UNetGroup(up_channels[i], channels[i], depth=depth, mode='up', merge_mode='concat')
+            self.up_groups.append(group)
+
+        # Final convolution
+        self.final_conv = nn.Conv3d(up_channels[0], config['out_channels'], kernel_size=1)
+
+    def forward(self, x):
+        skips = []
+        for group in self.down_groups:
+            x, skip = group(x)
+            skips.append(skip[-1])  # Collect the last skip connection from each group
+
+        skips = reversed(skips)  # Reverse for the upsampling path
+        for skip, group in zip(skips, self.up_groups):
+            x = group(x, skip=skip)
+
+        x = self.final_conv(x)
+        return x
+
 
 class ResidualBranch(nn.Module):
     def __init__(self,
@@ -164,7 +249,7 @@ class ResidualGroup(nn.Module):
 
 
 class Network(nn.Module):
-    def __init__(self, config, input_dim=(3, 32, 32), classes=10):
+    def __init__(self, config, input_dim=(1, 32, 32), classes=10):
         super(Network, self).__init__()
 
         self.M = config["M"]
