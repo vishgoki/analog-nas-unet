@@ -11,8 +11,8 @@
 # Main Code (THIS IS NOT THE MAIN CODE BRANCH) [**Main Project Code Branch**](https://github.com/vishgoki/nas-seg-net/tree/nas-nuclei)
 
 ## Code Updates:
-[**NAS Run**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/AnalogNAS_Run.ipynb)
-[**Digital Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_DIGITAL.ipynb)
+[**NAS Run**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/AnalogNAS_Run.ipynb)   |   
+[**Digital Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_DIGITAL.ipynb)   |    
 [**Analog Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_ANALOG_Latest.ipynb)
 
 ## Approach
