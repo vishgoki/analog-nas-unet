@@ -10,11 +10,10 @@
 
 # Main Code (THIS IS NOT THE MAIN CODE BRANCH) [**Main Project Code Branch**](https://github.com/vishgoki/nas-seg-net/tree/nas-nuclei)
 
-[**Setup**](#setup)
-| [**Usage**](#usage)
-| [**Docs**](https://github.com/IBM/analog-nas/blob/main/starter_notebook.ipynb)
-| [**References**](#references)
-
+## Code Updates:
+[**NAS Run**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/AnalogNAS_Run.ipynb)
+[**Digital Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_DIGITAL.ipynb)
+[**Analog Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_ANALOG_Latest.ipynb)
 
 ## Approach
 
