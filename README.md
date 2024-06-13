@@ -7,9 +7,9 @@
 **NAS-SegNet** Goal of this project is to implement NASSegNet for nuclei image segmentation with analog/hardware-based neural architecture search (HW-NAS). Until now, only classification architectures have been implemented in this domain, so the unique value of this solution is the new segmentation implementation.
 
 ## Code Updates:
-[**NAS Run**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/AnalogNAS_Run.ipynb)
-[**Digital Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_DIGITAL.ipynb)
-[**Analog Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_ANALOG_Latest.ipynb)
+* [**NAS Run**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/AnalogNAS_Run.ipynb)
+* [**Digital Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_DIGITAL.ipynb)
+* [**Analog Training**](https://github.com/vishgoki/nas-seg-net/blob/nas-nuclei/NAS_NUCLEI_RESNETSEG_ANALOG_Latest.ipynb)
 
 ## Approach
 
